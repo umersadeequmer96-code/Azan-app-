@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اسلامی اذان و قبلہ ایپ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #e8f5e9;
+            margin: 0;
+            padding: 15px;
+            text-align: center;
+        }
+        h1 {
+            color: #004d40;
+            margin-bottom: 5px;
+        }
+        .date-box {
+            color: #00796b;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: white;
+            padding: 14px 20px;
+            margin: 10px auto;
+            border-radius: 12px;
+            width: 85%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .prayer-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #004d40;
+        }
+        .prayer-time {
+            font-size: 16px;
+            color: #00796b;
+            background: #e0f2f1;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        .btn-section {
+            margin-top: 20px;
+        }
+        button {
+            background-color: #00796b;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            font-size: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        button:hover {
+            background-color: #004d40;
+        }
+        .dua-box {
+            display: none;
+            background: #ffffff;
+            border: 2px solid #00796b;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px auto;
+            width: 85%;
+            max-width: 400px;
+            line-height: 1.8;
+            font-size: 16px;
+            color: #004d40;
+        }
+        /* Qibla Compass Styling */
+        .qibla-section {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 85%;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .compass-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border: 8px solid #00796b;
+            border-radius: 50%;
+            background: #f1f8e9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .compass-arrow {
+            width: 8px;
+            height: 90px;
+            background: red;
+            position: absolute;
+            top: 10px;
+            border-radius: 4px;
+            transform-origin: bottom center;
+            transition: transform 0.2s ease-out;
+        }
+        .kaaba-icon {
+            font-size: 24px;
+            position: absolute;
+            top: -20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🌙 اسلامی اذان و قبلہ ایپ</h1>
+    <div class="date-box" id="current-date">آج کی تاریخ لوڈ ہو رہی ہے...</div>
+
+    <!-- Namaz Timings Container -->
+    <div id="timings-container">
+        <div class="card"><span class="prayer-name">فجر (Fajr)</span><span class="prayer-time" id="Fajr">--:--</span></div>
+        <div class="card"><span class="prayer-name">ظہر (Dhuhr)</span><span class="prayer-time" id="Dhuhr">--:--</span></div>
+        <div class="card"><span class="prayer-name">عصر (Asr)</span><span class="prayer-time" id="Asr">--:--</span></div>
+        <div class="card"><span class="prayer-name">مغرب (Maghrib)</span><span class="prayer-time" id="Maghrib">--:--</span></div>
+        <div class="card"><span class="prayer-name">عشاء (Isha)</span><span class="prayer-time" id="Isha">--:--</span></div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="btn-section">
+        <button onclick="playAzan()">🔊 اذان سنیں</button>
+        <button onclick="toggleDua()">📖 اذان کی دعا</button>
+        <button onclick="toggleQibla()">🧭 قبلہ ڈائریکشن</button>
+    </div>
+
+    <!-- Dua Box -->
+    <div class="dua-box" id="dua-container">
+        <strong>اذان کے بعد کی دعا:</strong><br>
+        اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ، وَالصَّلاَةِ الْقَائِمَةِ، آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ، وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ
+    </div>
+
+    <!-- Qibla Compass Section -->
+    <div class="qibla-section" id="qibla-container">
+        <h3>🧭 قبلہ نما (Qibla Compass)</h3>
+        <p id="qibla-degree">قبلہ کا زاویہ: معلوم کیا جا رہا ہے...</p>
+        
+        <div class="compass-container">
+            <div class="compass-arrow" id="compass-pointer">
+                <span class="kaaba-icon">🕋</span>
+            </div>
+        </div>
+        <button onclick="initQibla()">موجودہ لوکیشن سے زاویہ لیں</button>
+    </div>
+
+    <!-- Audio Stream -->
+    <audio id="azan-player" src="https://www.islamcan.com/audio/adhan/azan1.mp3"></audio>
+
+    <script>
+        let qiblaBearing = 265; // Default for Pakistan (approx)
+
+        // 1. Fetch Prayer Timings using User Location or City
+        async function fetchTimings(lat, lng) {
+            try {
+                let url = 'https://api.aladhan.com/v1/timingsByCity?city=Faisalabad&country=Pakistan&method=1';
+                if (lat && lng) {
+                    url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=1`;
+                }
+
+                const res = await fetch(url);
+                const data = await res.json();
+                const timings = data.data.timings;
+                const date = data.data.date.readable;
+
+                document.getElementById('current-date').innerText = "تاریخ: " + date;
+                document.getElementById('Fajr').innerText = timings.Fajr;
+                document.getElementById('Dhuhr').innerText = timings.Dhuhr;
+                document.getElementById('Asr').innerText = timings.Asr;
+                document.getElementById('Maghrib').innerText = timings.Maghrib;
+                document.getElementById('Isha').innerText = timings.Isha;
+            } catch (error) {
+                document.getElementById('current-date').innerText = "انٹرنیٹ کنکشن چیک کریں";
+            }
+        }
+
+        // 2. Qibla Degree Calculation
+        function calculateQibla(lat, lng) {
+            const kaabaLat = 21.4225;
+            const kaabaLng = 39.8262;
+
+            const phiK = kaabaLat * Math.PI / 180;
+            const lambdaK = kaabaLng * Math.PI / 180;
+            const phi = lat * Math.PI / 180;
+            const lambda = lng * Math.PI / 180;
+
+            const qibla = Math.atan2(
+                Math.sin(lambdaK - lambda),
+                Math.cos(phi) * Math.tan(phiK) - Math.sin(phi) * Math.cos(lambdaK - lambda)
+            );
+
+            return (qibla * 180 / Math.PI + 360) % 360;
+        }
+
+        // 3. Initialize GPS for Compass
+        function initQibla() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    qiblaBearing = calculateQibla(lat, lng);
+                    document.getElementById('qibla-degree').innerText = `قبلہ کا زاویہ: ${Math.round(qiblaBearing)}°`;
+                    
+                    // Re-fetch accurate prayer times based on exact GPS
+                    fetchTimings(lat, lng);
+
+                    startDeviceOrientation();
+                }, () => {
+                    alert("لوکیشن کی اجازت فراہم کریں تاکہ قبلہ کی سمت درست معلوم ہو سکے۔");
+                });
+            } else {
+                alert("آپ کا براؤزر لوکیشن کو سپورٹ نہیں کرتا۔");
+            }
+        }
+
+        // 4. Handle Mobile Compass Orientation Sensor
+        function startDeviceOrientation() {
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', function(event) {
+                    let alpha = event.alpha; // Compass heading in degrees
+                    if (event.webkitCompassHeading) {
+                        alpha = event.webkitCompassHeading; // iOS support
+                    }
+
+                    if (alpha !== null) {
+                        // Calculate needle position towards Qibla
+                        let pointerDegree = qiblaBearing - alpha;
+                        document.getElementById('compass-pointer').style.transform = `rotate(${pointerDegree}deg)`;
+                    }
+                }, true);
+            }
+        }
+
+        // 5. Helper Functions
+        function playAzan() {
+            const player = document.getElementById('azan-player');
+            if (player.paused) {
+                player.play();
+                alert("اذان شروع ہو گئی ہے");
+            } else {
+                player.pause();
+            }
+        }
+
+        function toggleDua() {
+            const duaBox = document.getElementById('dua-container');
+            duaBox.style.display = (duaBox.style.display === "block") ? "none" : "block";
+        }
+
+        function toggleQibla() {
+            const qiblaBox = document.getElementById('qibla-container');
+            if (qiblaBox.style.display === "block") {
+                qiblaBox.style.display = "none";
+            } else {
+                qiblaBox.style.display = "block";
+                initQibla();
+            }
+        }
+
+        // On Load
+        fetchTimings();
+    </script>
+</body>
+</html>
+
+
