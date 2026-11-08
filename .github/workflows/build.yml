@@ -1,4 +1,13 @@
-build.yml
+name: Build APK
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
 name: Build APK
 
 on:
