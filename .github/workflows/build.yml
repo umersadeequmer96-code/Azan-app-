@@ -1,3 +1,4 @@
+
 name: Build APK
 
 on:
@@ -9,18 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-       name: Checkout code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-       name: Setup Flutter
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
 
-       name: Get dependencies
+      - name: Get dependencies
         working-directory: ./my_app
         run: flutter pub get
 
-       name: Build APK
+      - name: Build APK
         working-directory: ./my_app
         run: flutter build apk --release
