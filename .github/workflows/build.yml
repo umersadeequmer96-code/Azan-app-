@@ -2,6 +2,6 @@
   working-directory: ./my_app
   run: flutter pub get
 
-- name: Build APK
+ name: Build APK
   working-directory: ./my_app
   run: flutter build apk --release
