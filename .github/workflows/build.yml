@@ -1,4 +1,4 @@
-- name: Run flutter pub get
+ name: Run flutter pub get
   working-directory: ./my_app
   run: flutter pub get
 
