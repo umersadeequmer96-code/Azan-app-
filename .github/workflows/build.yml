@@ -1,7 +1,26 @@
- name: Run flutter pub get
-  working-directory: ./my_app
-  run: flutter pub get
+name: Build APK
 
- name: Build APK
-  working-directory: ./my_app
-  run: flutter build apk --release
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+       name: Checkout code
+        uses: actions/checkout@v4
+
+       name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+       name: Get dependencies
+        working-directory: ./my_app
+        run: flutter pub get
+
+       name: Build APK
+        working-directory: ./my_app
+        run: flutter build apk --release
