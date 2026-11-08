@@ -1,22 +1,7 @@
-name: Build Android App
+- name: Run flutter pub get
+  working-directory: ./my_app
+  run: flutter pub get
 
-on:
-  push:
-    branches: [ main, master ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.x'
-          channel: 'stable'
-      - run: flutter pub get
-      - run: flutter build apk --release
-      - uses: actions/upload-artifact@v4
-        with:
-          name: app-release
-          path: build/app/outputs/flutter-apk/app-release.apk
-          
+- name: Build APK
+  working-directory: ./my_app
+  run: flutter build apk --release
